@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:prayer_times/screens/azan_settings_screen.dart';
 import 'package:prayer_times/screens/daily_quote_screen.dart';
+import 'package:prayer_times/screens/quran_screen.dart';
+import 'package:prayer_times/utils/ad_banner.dart';
 import 'prayer_times_screen.dart';
 import 'qibla_screen.dart';
 import 'tasbeeh_screen.dart';
@@ -44,10 +45,10 @@ class HomeScreen extends StatelessWidget {
         destination: const DailyQuoteScreen(),
       ),
       _HomeCard(
-        title: 'Azan Settings',
-        icon: Icons.volume_up,
+        title: 'Holy Quran',
+        icon: Icons.menu_book,
         color: Colors.orange,
-        destination: const AzanSettingsScreen(),
+        destination: const QuranScreen(),
       ),
     ];
 
@@ -55,12 +56,20 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('Islamic Utility App', style: GoogleFonts.poppins()),
       ),
-      body: GridView.count(
-        crossAxisCount: 2,
-        padding: const EdgeInsets.all(16),
-        crossAxisSpacing: 16,
-        mainAxisSpacing: 16,
-        children: cards,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            child: GridView.count(
+              crossAxisCount: 2,
+              padding: const EdgeInsets.all(16),
+              crossAxisSpacing: 16,
+              mainAxisSpacing: 16,
+              children: cards,
+            ),
+          ),
+          AdBanner(),
+        ],
       ),
     );
   }

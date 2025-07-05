@@ -1,23 +1,14 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'screens/home_screen.dart';
-import 'utils/notification_helper.dart';
-import 'package:permission_handler/permission_handler.dart';
-
-Future<void> requestNotificationPermission() async {
-  final nStatus = await Permission.notification.status;
-  final aStatus = await Permission.scheduleExactAlarm.status;
-
-  if (!nStatus.isGranted || !aStatus.isGranted) {
-    await Permission.notification.request();
-    await Permission.scheduleExactAlarm.request();
-  }
-}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await requestNotificationPermission();
-  await NotificationHelper.init();
+  await MobileAds.instance.initialize();
+  MobileAds.instance.updateRequestConfiguration(
+    RequestConfiguration(testDeviceIds: ['F910D6981341B1D8ACD7C37C7C625DBC']),
+  );
 
   FlutterError.onError = (FlutterErrorDetails details) {
     FlutterError.presentError(details);

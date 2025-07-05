@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:adhan/adhan.dart';
 import 'package:geolocator/geolocator.dart';
@@ -7,7 +6,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:prayer_times/models/prayer_times_data.dart';
-import '../utils/notification_helper.dart';
 
 class PrayerTimesScreen extends StatefulWidget {
   const PrayerTimesScreen({super.key});
@@ -35,7 +33,6 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen>
   void initState() {
     super.initState();
     Future.microtask(() async {
-      await NotificationHelper.init();
       await _loadSelectedMadhab();
       await _determinePosition();
     });
@@ -120,43 +117,8 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen>
           : hanafiPrayerTimesData;
     });
 
-    cancelAllNotifications();
-    await _schedulePrayerNotifications();
     _updateNextPrayer();
     _startCountdown();
-  }
-
-  Future<void> cancelAllNotifications() async {
-    try {
-      await NotificationHelper.cancelAllNotifications();
-    } catch (e, stack) {
-      log('Notification cancel error: $e\n$stack');
-    }
-  }
-
-  Future<void> _schedulePrayerNotifications() async {
-    if (prayerTimesData == null) return;
-
-    await NotificationHelper.showPrayerNotification(
-      'Fajr',
-      prayerTimesData!.fajr,
-    );
-    await NotificationHelper.showPrayerNotification(
-      'Dhuhr',
-      prayerTimesData!.dhuhr,
-    );
-    await NotificationHelper.showPrayerNotification(
-      'Asr',
-      prayerTimesData!.asr,
-    );
-    await NotificationHelper.showPrayerNotification(
-      'Maghrib',
-      prayerTimesData!.maghrib,
-    );
-    await NotificationHelper.showPrayerNotification(
-      'Isha',
-      prayerTimesData!.isha,
-    );
   }
 
   void _updateNextPrayer() {
